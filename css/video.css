@@ -1,0 +1,28 @@
+/* ================================================================
+   video.css
+   "Watch" section — 16:9 responsive wrapper for a YouTube embed.
+   ================================================================ */
+
+/* The #music section wraps both the video and the album block below.
+   The border lives here (rather than album.css) because video is
+   first in the DOM — this rule fires before the album block renders. */
+#music { border-top: 1px solid #1a1a1a; }
+
+/* 16:9 responsive wrapper — padding-bottom technique.
+   The iframe fills it absolutely. */
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  background: #0d0d0d;
+  border: 1px solid #1e1e1e;
+  overflow: hidden;
+}
+
+.video-wrapper iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}

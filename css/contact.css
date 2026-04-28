@@ -1,0 +1,106 @@
+/* ================================================================
+   contact.css
+   "Book Us" section — two-column layout (blurb + booking details
+   on the left, underline-style form on the right).
+   ================================================================ */
+
+#contact { border-top: 1px solid #1a1a1a; }
+
+.contact-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 80px;
+  align-items: start;
+}
+
+/* ── LEFT COLUMN: blurb + booking/press/based-in details ── */
+.contact-blurb {
+  font-family: var(--font-body);
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--white-dim);
+  margin-bottom: 32px;
+}
+
+.contact-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.contact-detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.contact-detail-label {
+  font-size: var(--label-size);
+  letter-spacing: var(--label-spacing);
+  text-transform: uppercase;
+  color: var(--red);
+}
+.contact-detail-value {
+  font-size: 13px;
+  color: var(--white-dim);
+}
+
+/* ── RIGHT COLUMN: booking form ── */
+.form-group {
+  margin-bottom: 20px;
+}
+.form-label {
+  display: block;
+  font-size: var(--label-size);
+  letter-spacing: var(--label-spacing);
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 8px;
+}
+/* Transparent inputs with an underline that reddens on focus */
+.form-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #333;
+  padding: 10px 0;
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.form-input::placeholder { color: #333; }
+.form-input:focus { border-color: var(--red); }
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+textarea.form-input {
+  resize: none;
+  height: 100px;
+  margin-top: 4px;
+}
+
+.form-submit {
+  background: var(--red);
+  color: var(--white);
+  border: none;
+  padding: 16px 40px;
+  font-family: var(--font-display);
+  font-size: 20px;
+  letter-spacing: 3px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  margin-top: 8px;
+  display: inline-block;
+}
+.form-submit:hover { background: var(--red-dark); }
+.form-submit:active { transform: scale(0.98); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .contact-layout { grid-template-columns: 1fr; gap: 48px; }
+  .form-row { grid-template-columns: 1fr; gap: 0; }
+}

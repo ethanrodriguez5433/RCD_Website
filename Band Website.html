@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="Images/RCDIcon.png" type="image/x-icon">
+  <title>Rose City Dancers</title>
+
+  <!-- Google Fonts: display (Bebas Neue), body (DM Mono + alternates), handwritten (Permanent Marker) -->
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Permanent+Marker&family=Barlow+Condensed:wght@400;500;600&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Rajdhani:wght@400;500;600&family=Dancing+Script:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets — load order matters:
+       1. base (tokens/reset)  2. layout (nav/footer/section chrome)  3. per-section components -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/hero.css">
+  <link rel="stylesheet" href="css/video.css">
+  <link rel="stylesheet" href="css/album.css">
+  <link rel="stylesheet" href="css/band.css">
+  <link rel="stylesheet" href="css/merch.css">
+  <link rel="stylesheet" href="css/contact.css">
+</head>
+<body>
+
+<!-- ========== NAV ========== -->
+<nav>
+  <a href="#hero" class="nav-logo">Rose City Dancers<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#music">Music</a></li>
+    <li><a href="#band">Band</a></li>
+    <li><a href="#merch">Merch</a></li>
+    <li><a href="#contact" class="nav-book">Book Us</a></li>
+  </ul>
+</nav>
+
+<!-- ========== HERO ========== -->
+<div id="hero">
+  <div class="hero-bg-lines"></div>
+  <div class="hero-red-bar"></div>
+
+  <h1 class="hero-name reveal">
+    <svg class="hero-arc" viewBox="0 0 560 160" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Rose City Dancers">
+      <!-- Invisible arc path — the text below rides along it.
+           Tweak the "A rx ry ..." values to make the curve flatter or steeper. -->
+      <path id="rcd-arc" d="M 40 150 A 260 120 0 0 1 520 150" fill="none"/>
+      <text>
+        <textPath href="#rcd-arc" startOffset="50%" text-anchor="middle">Rose City Dancers</textPath>
+      </text>
+    </svg>
+  </h1>
+  <div class="hero-logo reveal reveal-delay-1">
+    <img src="images/RCDIcon.png" alt="Rose City Dancers logo">
+  </div>
+
+  <p class="hero-tagline reveal reveal-delay-1">
+    Indie <span>/</span> Alt Rock <span>/</span> Est. 2023
+  </p>
+
+  <div class="stream-links reveal reveal-delay-2">
+    <a href="https://open.spotify.com/artist/74Z57vm3vMVVYyITZFJQhb?si=NCsiMIz-SrKGI6j_JZKqqw" class="stream-btn" aria-label="Spotify">
+      <span class="stream-icon">&#9678;</span><span>Spotify</span>
+    </a>
+    <a href="https://www.youtube.com/@OfficialRoseCityDancers" class="stream-btn" aria-label="YouTube">
+      <span class="stream-icon">&#9654;</span><span>YouTube</span>
+    </a>
+    <a href="https://music.apple.com/us/artist/rose-city-dancers/1772166492" class="stream-btn" aria-label="Apple Music">
+      <span class="stream-icon">&#9834;</span><span>Apple Music</span>
+    </a>
+    <a href="#" class="stream-btn" aria-label="Instagram">
+      <span class="stream-icon">&#9729;</span><span>Instagram</span>
+    </a>
+    <a href="#" class="stream-btn" aria-label="Bandcamp">
+      <span class="stream-icon">&#8853;</span><span>Bandcamp</span>
+    </a>
+  </div>
+
+  <div class="hero-scroll-hint">
+    <svg width="16" height="32" viewBox="0 0 16 24" fill="none" aria-hidden="true">
+      <rect x="1" y="1" width="14" height="22" rx="7" stroke="#333" stroke-width="1.5"></rect>
+      <circle cx="8" cy="7" r="2" fill="#333"></circle>
+    </svg>
+    <span>scroll</span>
+  </div>
+</div>
+
+<!-- ========== MUSIC (video + album) ========== -->
+<section id="music">
+  <div class="section-label reveal">Latest Release</div>
+  <h2 class="section-title reveal reveal-delay-1">Watch</h2>
+  <div class="video-wrapper reveal reveal-delay-2">
+    <iframe src="https://www.youtube.com/embed/7__TJH6rnuY?si=2mu6g-czgA9AFdge" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  </div>
+
+  <!-- Latest Album — playback logic is in js/album.js.
+       Drop MP3s into the audio-mp3/ folder and update data-src paths. -->
+  <div class="album reveal">
+    <div class="album-layout">
+      <div class="album-cover">
+        <img src="images/The_Girl_in_the_Pink_Dress_Cover.png" alt="Album cover art">
+      </div>
+      <div class="album-info">
+        <span class="album-eyebrow">Latest Album</span>
+        <h3 class="album-title">The Girl in the Pink Dress</h3>
+        <ol class="track-list">
+          <!--
+            Per-track attributes:
+              data-src       path to the audio file (required)
+              data-start     seconds into the track where the preview begins (default 0)
+              data-duration  preview length in seconds (defaults to PREVIEW_DURATION in js/album.js)
+            Example of a preview that starts at 0:42 and runs 20s:
+              <li class="track" data-src="audio-mp3/track-03.mp3" data-start="42" data-duration="20">
+          -->
+          <li class="track" data-src="audio-mp3/MY%20LEFT%20FOOTED%20WALTZ.mp3" data-start="0">
+            <button class="track-play" type="button" aria-label="Play preview of My Left Footed Waltz">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <polygon class="icon-play" points="8,5 19,12 8,19"/>
+                <rect class="icon-stop" x="6" y="6" width="12" height="12"/>
+              </svg>
+            </button>
+            <span class="track-number">01</span>
+            <span class="track-title">My Left Footed Waltz</span>
+          </li>
+          <li class="track" data-src="audio-mp3/THE%20OTHERSIDE.mp3" data-start="134">
+            <button class="track-play" type="button" aria-label="Play preview of The Otherside">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <polygon class="icon-play" points="8,5 19,12 8,19"/>
+                <rect class="icon-stop" x="6" y="6" width="12" height="12"/>
+              </svg>
+            </button>
+            <span class="track-number">02</span>
+            <span class="track-title">The Otherside</span>
+          </li>
+          <li class="track" data-src="audio-mp3/BRING%20IN%20THE%20CAVALRY.mp3" data-start="180" data-duration="27">
+            <button class="track-play" type="button" aria-label="Play preview of Bring in the Cavalry">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <polygon class="icon-play" points="8,5 19,12 8,19"/>
+                <rect class="icon-stop" x="6" y="6" width="12" height="12"/>
+              </svg>
+            </button>
+            <span class="track-number">03</span>
+            <span class="track-title">Bring in the Cavalry</span>
+          </li>
+          <li class="track" data-src="audio-mp3/I%20PLAY%20FOR%20YOU.mp3" data-start="0" data-duration="30">
+            <button class="track-play" type="button" aria-label="Play preview of I Play for You">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <polygon class="icon-play" points="8,5 19,12 8,19"/>
+                <rect class="icon-stop" x="6" y="6" width="12" height="12"/>
+              </svg>
+            </button>
+            <span class="track-number">04</span>
+            <span class="track-title">I Play for You</span>
+          </li>
+          <li class="track" data-src="audio-mp3/Dearly%20Beloved.mp3" data-start="0">
+            <button class="track-play" type="button" aria-label="Play preview of Dearly Beloved">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <polygon class="icon-play" points="8,5 19,12 8,19"/>
+                <rect class="icon-stop" x="6" y="6" width="12" height="12"/>
+              </svg>
+            </button>
+            <span class="track-number">05</span>
+            <span class="track-title">Dearly Beloved</span>
+          </li>
+          <li class="track" data-src="audio-mp3/SHORT%20STORY%205.mp3" data-start="184", data-duration="40">
+            <button class="track-play" type="button" aria-label="Play preview of Short Story 5">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <polygon class="icon-play" points="8,5 19,12 8,19"/>
+                <rect class="icon-stop" x="6" y="6" width="12" height="12"/>
+              </svg>
+            </button>
+            <span class="track-number">06</span>
+            <span class="track-title">Short Story #5</span>
+          </li>
+          <li class="track" data-src="audio-mp3/SAN%20DIEGO%20LIGHTS.mp3" data-start="262" data-duration="26">
+            <button class="track-play" type="button" aria-label="Play preview of San Diego Lights">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <polygon class="icon-play" points="8,5 19,12 8,19"/>
+                <rect class="icon-stop" x="6" y="6" width="12" height="12"/>
+              </svg>
+            </button>
+            <span class="track-number">07</span>
+            <span class="track-title">San Diego Lights</span>
+          </li>
+          <li class="track" data-src="audio-mp3/DANCERS%20AND%20OTHER%20LIARS.mp3" data-start="54" data-duration="27">
+            <button class="track-play" type="button" aria-label="Play preview of Dancers and Other Liars">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <polygon class="icon-play" points="8,5 19,12 8,19"/>
+                <rect class="icon-stop" x="6" y="6" width="12" height="12"/>
+              </svg>
+            </button>
+            <span class="track-number">08</span>
+            <span class="track-title">Dancers and Other Liars</span>
+          </li>
+          <li class="track" data-src="audio-mp3/THE%20GIRL%20IN%20THE%20PINK%20DRESS.mp3" data-start="204" data-duration="50">
+            <button class="track-play" type="button" aria-label="Play preview of The Girl in the Pink Dress">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <polygon class="icon-play" points="8,5 19,12 8,19"/>
+                <rect class="icon-stop" x="6" y="6" width="12" height="12"/>
+              </svg>
+            </button>
+            <span class="track-number">09</span>
+            <span class="track-title">The Girl in the Pink Dress</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== BAND ========== -->
+<section id="band">
+  <div class="section-label reveal">The People</div>
+  <h2 class="section-title reveal reveal-delay-1">The Band</h2>
+  <div class="polaroid-grid">
+
+    <div class="polaroid-wrap reveal reveal-delay-1">
+      <a href="member-bio.html" class="polaroid">
+        <div class="polaroid-photo">
+          <img src="images/Elijah.jpeg" alt="Elijah">
+        </div>
+        <span class="polaroid-name">Elijah Narvaes</span>
+      </a>
+      <span class="polaroid-instrument">Lead Guitar</span>
+    </div>
+
+    <div class="polaroid-wrap reveal reveal-delay-2">
+      <a href="member-bio.html" class="polaroid">
+        <div class="polaroid-photo">
+          <img src="images/Joseph.jpeg" alt="Joseph">
+        </div>
+        <span class="polaroid-name">Joseph Perez</span>
+      </a>
+      <span class="polaroid-instrument">Drums</span>
+    </div>
+
+    <div class="polaroid-wrap reveal reveal-delay-3">
+      <a href="member-bio.html" class="polaroid">
+        <div class="polaroid-photo">
+          <img src="images/Ethan.jpeg" alt="Ethan">
+        </div>
+        <span class="polaroid-name">Ethan Rodriguez</span>
+      </a>
+      <span class="polaroid-instrument">Vocals</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- ========== MERCH ========== -->
+<div id="merch">
+  <div class="merch-inner">
+    <div class="section-label reveal">The Store</div>
+    <h2 class="section-title reveal reveal-delay-1">Merch</h2>
+    <div class="merch-grid">
+
+      <a href="#" class="merch-card reveal">
+        <div class="merch-img">
+          <img src="images/logoTee.jpeg" alt="Band Logo T-Shirt">
+        </div>
+        <div class="merch-info">
+          <div>
+            <div class="merch-name">Logo Tee</div>
+            <div class="merch-cta">Shop Now &rarr;</div>
+          </div>
+          <div class="merch-price">$15</div>
+        </div>
+      </a>
+
+      <a href="#" class="merch-card reveal reveal-delay-1">
+        <div class="merch-img">
+          <img src="images/accessories.jpeg" alt="Accessory pack">
+        </div>
+        <div class="merch-info">
+          <div>
+            <div class="merch-name">Accessory Pack</div>
+            <div class="merch-cta">Shop Now &rarr;</div>
+          </div>
+          <div class="merch-price">$7</div>
+        </div>
+      </a>
+
+      <a href="#" class="merch-card reveal reveal-delay-2">
+        <div class="merch-img">
+          <span class="merch-img-label">product photo</span>
+        </div>
+        <div class="merch-info">
+          <div>
+            <div class="merch-name">Full Pack</div>
+            <div class="merch-cta">Shop Now &rarr;</div>
+          </div>
+          <div class="merch-price">$20</div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</div>
+
+<!-- ========== CONTACT ========== -->
+<section id="contact">
+  <div class="section-label reveal">Get in Touch</div>
+  <h2 class="section-title reveal reveal-delay-1">Book Us</h2>
+  <div class="contact-layout">
+    <div>
+      <p class="contact-blurb reveal reveal-delay-2">
+        Looking to book us for a show, festival, or private event? Send us a message with the form and we'll get back to you within a few days.
+      </p>
+      <div class="contact-detail reveal reveal-delay-3">
+        <div class="contact-detail-item">
+          <span class="contact-detail-label">Contact</span>
+          <span class="contact-detail-value">rosecitydancers.music@gmail.com</span>
+        </div>
+        <div class="contact-detail-item">
+          <span class="contact-detail-label">Based In</span>
+          <span class="contact-detail-value">San Antonio, TX</span>
+        </div>
+      </div>
+    </div>
+
+    <form class="contact-form reveal reveal-delay-2" onsubmit="event.preventDefault(); alert('Thanks — we\'ll be in touch.');">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="contact-name">Name</label>
+          <input class="form-input" id="contact-name" type="text" placeholder="Your name" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="contact-email">Email</label>
+          <input class="form-input" id="contact-email" type="email" placeholder="you@example.com" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="contact-subject">Subject</label>
+        <input class="form-input" id="contact-subject" type="text" placeholder="Booking inquiry">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="contact-message">Message</label>
+        <textarea class="form-input" id="contact-message" placeholder="Tell us about your event" required></textarea>
+      </div>
+      <button class="form-submit" type="submit">Send</button>
+    </form>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer>
+  <span class="footer-name">Rose City Dancers</span>
+  <span class="footer-copy">&copy; 2026 Rose City Dancers. All rights reserved.</span>
+</footer>
+
+<!-- Scripts at the bottom so the DOM is parsed before they run -->
+<script src="js/main.js"></script>
+<script src="js/album.js"></script>
+
+</body>
+</html>

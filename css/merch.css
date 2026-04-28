@@ -1,0 +1,117 @@
+/* ================================================================
+   merch.css
+   "Merch" section — full-bleed band on --black-2 with a 3-column
+   product grid. Uses #merch (a <div>, not <section>) to opt out of
+   the shared section max-width and span edge-to-edge.
+   ================================================================ */
+
+#merch {
+  border-top: 1px solid #1a1a1a;
+  max-width: 100%;
+  padding: 100px 48px;
+  background: var(--black-2);
+}
+
+/* Inner container re-establishes the 1200px max-width so the
+   content lines up with the rest of the page. */
+.merch-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.merch-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+
+.merch-card {
+  background: var(--black-3);
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  text-decoration: none;
+  display: block;
+  transition: transform 0.2s;
+}
+.merch-card:hover {
+  z-index: 2;
+  transform: scale(1.02);
+}
+
+.merch-img {
+  width: 100%;
+  aspect-ratio: 1;
+  background: #181818;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    #161616, #161616 4px,
+    #1c1c1c 4px, #1c1c1c 10px
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+/* Product photo fills the square box and crops to cover.
+   The container's aspect-ratio: 1 keeps every card uniform. */
+.merch-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.merch-img-label {
+  font-family: var(--font-body);
+  font-size: 10px;
+  color: #333;
+  letter-spacing: 1px;
+}
+/* Bottom fade so text below feels grounded to the photo */
+.merch-img::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(10, 10, 10, 0.5) 0%,
+    transparent 50%
+  );
+}
+
+.merch-info {
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #222;
+}
+.merch-name {
+  font-family: var(--font-display);
+  font-size: 22px;
+  letter-spacing: 1px;
+  color: var(--white);
+}
+.merch-price {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--red);
+  letter-spacing: 1px;
+}
+.merch-cta {
+  font-family: var(--font-body);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--white-dim);
+  transition: color 0.2s;
+}
+.merch-card:hover .merch-cta { color: var(--red); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  #merch { padding: 80px 24px; }
+  .merch-grid { grid-template-columns: 1fr; }
+}
