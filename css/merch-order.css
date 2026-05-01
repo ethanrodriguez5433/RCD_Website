@@ -1,0 +1,509 @@
+/* ================================================================
+   merch-order.css
+   The interactive "Order Form" section beneath the product cards.
+   Two columns: visitor details on the left, item picker + bracelet
+   configurator + summary on the right.
+
+   Why this is a separate stylesheet from merch-page.css:
+     The catalog and the order form are visually different layers
+     (browse vs. configure) and almost certainly evolve at different
+     speeds. Keeping them in separate files means changes to the
+     catalog's product cards never require scrolling past 200 lines
+     of configurator state styling, and vice versa.
+   ================================================================ */
+
+.order-section {
+  padding: 64px 48px 80px;
+}
+
+/* The eyebrow + title pair at the top of the section.
+   Mirrors .page-header-label / page-header h1, but slightly smaller
+   so the merch page reads "MERCH > order form" hierarchically rather
+   than as two equally-weighted titles. */
+.order-section-label {
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.order-section-label::after {
+  content: '';
+  width: 40px;
+  height: 1px;
+  background: #333;
+}
+.order-section-title {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 5vw, 64px);
+  letter-spacing: 2px;
+  color: var(--white);
+  margin-bottom: 48px;
+  line-height: 0.95;
+}
+
+/* Left: personal info.  Right: item picker + summary.
+   1fr / 1.2fr biases toward the right column because that side is
+   where most of the action (and visual weight) is. */
+.order-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 64px;
+  align-items: start;
+}
+
+/* ── COLUMN HEADERS ──
+   Both "Your Info" and "Select Items" use this same pattern: a
+   Bebas Neue label with a hairline rule under it. Same styling for
+   both, so they read as paired column titles. */
+.order-block-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  letter-spacing: 2px;
+  color: var(--white);
+  padding-bottom: 12px;
+  border-bottom: 1px solid #333;
+  margin-bottom: 24px;
+}
+
+/* ── FORM FIELDS (LEFT COLUMN) ──
+   Underline-only inputs. Labels use the same --label-size /
+   --label-spacing tokens as the contact form on the home page so
+   the two forms feel visually unified across the site. */
+.order-form .form-group {
+  margin-bottom: 24px;
+  position: relative;
+}
+.order-form .form-label {
+  display: block;
+  font-family: var(--font-body);
+  font-size: var(--label-size);
+  letter-spacing: var(--label-spacing);
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 8px;
+}
+.order-form .form-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #2a2a2a;
+  padding: 10px 0;
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.order-form .form-input::placeholder { color: #333; }
+.order-form .form-input:focus { border-color: var(--red); }
+
+/* Two-up and three-up rows for paired fields (e.g. City / State / ZIP). */
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.form-row-3 { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 16px; }
+
+/* ── ITEM SELECTOR (RIGHT COLUMN) ──
+   Stack of cards, each one toggleable. Selection is communicated by
+   a 3px red bar that scales in from the bottom on the left edge
+   (matches the brutalist "rule" motif used elsewhere). */
+.items-col { display: flex; flex-direction: column; }
+
+.order-items {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;            /* hairline seam between rows, not a gutter */
+}
+
+.order-item {
+  border: 1px solid #1e1e1e;
+  background: var(--black-3);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.order-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--red);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.2s;
+}
+.order-item.selected {
+  border-color: #333;
+  background: #1e1e1e;
+}
+.order-item.selected::before { transform: scaleY(1); }
+
+.order-item-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+}
+
+/* Square checkbox + thumbnail + meta + price, in that order. */
+.order-item-check {
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid #333;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s, background 0.2s;
+}
+.order-item.selected .order-item-check {
+  border-color: var(--red);
+  background: var(--red);
+}
+.check-icon { display: none; }
+.order-item.selected .check-icon { display: block; }
+
+/* The diagonal hatch is a fallback that shows through when no <img>
+   is dropped inside (e.g. Full Pack — no photo yet). When an <img>
+   is present it covers the hatch entirely via the rule below. */
+.order-item-thumb {
+  width: 52px;
+  height: 52px;
+  background: #161616;
+  background-image: repeating-linear-gradient(
+    -45deg, #141414, #141414 3px, #181818 3px, #181818 7px
+  );
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.order-item-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.order-item-meta { flex: 1; }
+.order-item-name {
+  font-family: var(--font-display);
+  font-size: 20px;
+  letter-spacing: 1px;
+  color: var(--white);
+  line-height: 1;
+}
+.order-item-sub {
+  font-size: 10px;
+  color: var(--white-dimmer);
+  letter-spacing: 1px;
+  margin-top: 3px;
+}
+
+.order-item-price {
+  font-size: 13px;
+  color: var(--red);
+  letter-spacing: 1px;
+  flex-shrink: 0;
+}
+
+/* ── BRACELET / SHIRT CONFIGURATOR ──
+   Reveals when its parent .order-item is .selected. Padded so it
+   visually steps inside the row's content area (aligning with the
+   thumbnail rather than the card edge). */
+.item-config {
+  display: none;
+  padding: 0 20px 20px 56px;
+  border-top: 1px solid #1e1e1e;
+  flex-direction: column;
+  gap: 20px;
+}
+.order-item.selected .item-config { display: flex; }
+
+/* Short description shown at the top of each expanded configurator
+   panel, mirroring the product-card text so visitors see what they're
+   buying alongside the size/color/lyric pickers. */
+.item-config-desc {
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--white-dim);
+  margin-bottom: 4px;
+}
+
+/* Bulleted list of what's in the bundle. Visually identical to the
+   .product-includes list in merch-page.css — same red square bullets,
+   same dim text — so the bundle contents feel consistent across
+   the catalog and the configurator. */
+.item-includes {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.item-includes-item {
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: var(--white-dimmer);
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.item-includes-item::before {
+  content: '';
+  width: 4px;
+  height: 4px;
+  background: var(--red);
+  flex-shrink: 0;
+}
+
+.config-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.config-label {
+  font-family: var(--font-body);
+  font-size: var(--label-size);
+  letter-spacing: var(--label-spacing);
+  text-transform: uppercase;
+  color: var(--red);
+}
+.config-sublabel {
+  font-size: 11px;
+  color: var(--white-dimmer);
+  letter-spacing: 0.5px;
+  margin-top: -6px;
+}
+
+/* ── Size chips (single-select within a group) ── */
+.size-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.size-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+}
+.size-chip-box {
+  border: 1px solid #333;
+  padding: 5px 14px;
+  font-size: 12px;
+  color: var(--white-dim);
+  transition: all 0.15s;
+  letter-spacing: 1px;
+}
+.size-chip.active .size-chip-box {
+  border-color: var(--white);
+  color: var(--white);
+  background: var(--black-4);
+}
+.size-chip-dim {
+  font-size: 9px;
+  color: var(--white-dimmer);
+  letter-spacing: 0.5px;
+}
+
+/* ── Color chips (multi-select) ──
+   Each chip is a colored circle with an optional checkmark in the
+   middle. .active toggles the white ring, scale, and check visibility. */
+.color-chips {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.color-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  position: relative;
+}
+.color-chip-swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  transition: border-color 0.15s, transform 0.15s;
+  position: relative;
+}
+.color-chip.active .color-chip-swatch {
+  border-color: var(--white);
+  transform: scale(1.12);
+}
+/* Per-color swatch backgrounds. The white and black swatches need
+   a baseline border in their unselected state because they'd be
+   nearly invisible against the #1e1e1e card otherwise. */
+.color-chip-swatch.c-red { background: #C0392B; }
+.color-chip-swatch.c-white {
+  background: #f0ede8;
+  border-color: #333 !important;
+}
+.color-chip.active .color-chip-swatch.c-white { border-color: var(--white) !important; }
+.color-chip-swatch.c-black {
+  background: #1a1a1a;
+  border-color: #444;
+}
+.color-chip.active .color-chip-swatch.c-black { border-color: var(--white) !important; }
+.color-chip-swatch.c-pink { background: #E8A0B0; }
+
+.color-chip-label {
+  font-size: 10px;
+  color: var(--white-dimmer);
+  letter-spacing: 0.5px;
+}
+.color-chip.active .color-chip-label { color: var(--white-dim); }
+
+.color-chip-check {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 12px;
+  color: var(--black);
+  display: none;
+  line-height: 1;
+}
+.color-chip.active .color-chip-check { display: block; }
+
+/* ── Lyric dropdown ──
+   A native <select> styled to match the form's flat aesthetic.
+   appearance:none kills the OS dropdown chrome, and we paint our
+   own red caret on top via .lyric-select-arrow. */
+.lyric-select-wrap { position: relative; }
+.lyric-select {
+  width: 100%;
+  background: var(--black-4);
+  border: 1px solid #2a2a2a;
+  border-bottom: 1px solid #333;
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 12px;
+  padding: 10px 36px 10px 14px;
+  outline: none;
+  appearance: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  letter-spacing: 0.5px;
+}
+.lyric-select:focus { border-color: var(--red); }
+/* Some browsers don't inherit font-family into <option>; set it
+   explicitly so the dropdown options match the rest of the form. */
+.lyric-select option {
+  background: var(--black-3);
+  font-family: var(--font-body);
+}
+.lyric-select-arrow {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--red);
+  font-size: 10px;
+  pointer-events: none;
+}
+
+/* ── ORDER SUMMARY ──
+   Lives inside the right column under the item list, separated by
+   a hairline rule. Rows are populated dynamically by js/merch.js. */
+.order-summary-wrap {
+  margin-top: 48px;
+  border-top: 1px solid #1a1a1a;
+  padding-top: 32px;
+}
+.summary-label {
+  font-family: var(--font-body);
+  font-size: var(--label-size);
+  letter-spacing: var(--label-spacing);
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 16px;
+}
+.summary-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: var(--white-dim);
+  letter-spacing: 0.5px;
+}
+.summary-row.total {
+  font-family: var(--font-display);
+  font-size: 22px;
+  letter-spacing: 2px;
+  color: var(--white);
+  border-top: 1px solid #222;
+  padding-top: 12px;
+  margin-top: 4px;
+}
+.summary-row .sum-price { color: var(--red); }
+.summary-row.dim {
+  color: var(--white-dimmer);
+  font-size: 11px;
+}
+
+/* ── Submit row ── */
+.submit-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 24px;
+}
+.submit-note {
+  font-size: 10px;
+  color: var(--white-dimmer);
+  letter-spacing: 0.5px;
+  line-height: 1.6;
+  max-width: 280px;
+}
+.submit-btn {
+  background: var(--red);
+  color: var(--white);
+  border: none;
+  padding: 16px 40px;
+  font-family: var(--font-display);
+  font-size: 22px;
+  letter-spacing: 3px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.submit-btn:hover { background: var(--red-dark); }
+.submit-btn:active { transform: scale(0.98); }
+.submit-btn:disabled {
+  background: #333;
+  cursor: not-allowed;
+}
+
+/* ── RESPONSIVE ──
+   On narrow screens the two columns collapse into a vertical stack.
+   The 3-up city/state/zip row also collapses to two columns then
+   one, which is enough — three side-by-side text inputs become
+   illegible below ~480px. */
+@media (max-width: 900px) {
+  .order-section { padding: 48px 24px 64px; }
+  .order-layout { grid-template-columns: 1fr; gap: 48px; }
+}
+@media (max-width: 560px) {
+  .form-row { grid-template-columns: 1fr; gap: 0; }
+  .form-row-3 { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .submit-row { flex-direction: column; align-items: stretch; }
+  .submit-btn { width: 100%; }
+  .item-config { padding-left: 20px; }
+}

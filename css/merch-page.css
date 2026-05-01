@@ -1,0 +1,220 @@
+/* ================================================================
+   merch-page.css
+   Top half of the merch page: the title block (with the giant ghost
+   "MERCH" watermark) and the three product cards underneath.
+   The interactive order form below this lives in merch-order.css.
+   ================================================================ */
+
+/* ── PAGE HEADER ──
+   Big section title with a faint oversized "MERCH" word echoing
+   behind it on the right. Pure decorative — we use a ::before with
+   a near-transparent fill so it reads as texture, not content. */
+.page-header {
+  padding: 64px 48px 48px;
+  border-bottom: 1px solid #1a1a1a;
+  position: relative;
+  overflow: hidden;
+  /* Push down so the fixed nav (height 64px) doesn't clip the top. */
+  margin-top: 64px;
+}
+.page-header::before {
+  content: 'MERCH';
+  position: absolute;
+  right: 48px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-display);
+  font-size: 200px;
+  color: #ffffff04;          /* Near-invisible — just a hint of texture */
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Small red eyebrow label with a hairline trailing into empty space.
+   Same construction pattern as .section-label in layout.css, but with
+   slightly different sizing so it pairs with the bigger H1. */
+.page-header-label {
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.page-header-label::after {
+  content: '';
+  width: 40px;
+  height: 1px;
+  background: #333;
+}
+
+.page-header h1 {
+  font-family: var(--font-display);
+  font-size: clamp(52px, 7vw, 96px);
+  letter-spacing: 2px;
+  line-height: 0.9;
+  color: var(--white);
+}
+
+/* "Home › Merch" trail. Home links back to the index page. */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--white-dimmer);
+}
+.breadcrumb a {
+  color: var(--white-dimmer);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.breadcrumb a:hover { color: var(--red); }
+.breadcrumb span { color: var(--white-dim); }
+
+/* ── PRODUCT CARDS ──
+   Three side-by-side detail cards. The 2px gap is intentional — it
+   reads as a hairline industrial seam between cards rather than
+   white-space "padding," which fits the brutalist tone. */
+.products-section {
+  padding: 64px 48px;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+
+.product-card {
+  background: var(--black-3);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: transform 0.2s;
+  cursor: default;             /* Cards aren't links yet — no false signal */
+}
+/* Subtle lift on hover. z-index keeps the lifted card above its
+   neighbors (otherwise the 2px gap "swallows" the lift visually). */
+.product-card:hover {
+  z-index: 2;
+  transform: translateY(-3px);
+}
+
+/* Optional badge (e.g. "Pack", "Best Value") in the top-left corner. */
+.product-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: var(--red);
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 2px;
+  padding: 2px 10px;
+  z-index: 2;
+}
+
+/* ── Photo area ──
+   Square box with a diagonal hatch fallback for when no <img> is
+   present. When you drop a real <img> in, it fills the square
+   via object-fit and the hatch disappears beneath it. */
+.product-img {
+  width: 100%;
+  aspect-ratio: 1;
+  background: #161616;
+  background-image: repeating-linear-gradient(
+    -45deg, #141414, #141414 4px, #181818 4px, #181818 10px
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.product-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.product-img-label {
+  font-size: 11px;
+  color: #333;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+/* Bottom fade so the info block below feels grounded in the photo. */
+.product-img::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10, 10, 10, 0.6) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* ── Info area below the photo ── */
+.product-info {
+  padding: 20px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+.product-name {
+  font-family: var(--font-display);
+  font-size: 28px;
+  letter-spacing: 1px;
+  color: var(--white);
+  line-height: 1;
+}
+.product-price {
+  font-size: 13px;
+  color: var(--red);
+  letter-spacing: 1px;
+}
+.product-desc {
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--white-dim);
+  margin-top: 4px;
+}
+
+/* ── "Includes" bullet list ──
+   Each item is prefixed by a 4px red square. Built from a ::before
+   so the markup stays minimal — no extra <span> per bullet. */
+.product-includes {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.product-includes-item {
+  font-size: 11px;
+  color: var(--white-dimmer);
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.product-includes-item::before {
+  content: '';
+  width: 4px;
+  height: 4px;
+  background: var(--red);
+  flex-shrink: 0;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .page-header { padding: 40px 24px 32px; }
+  .page-header::before { font-size: 130px; right: 16px; }
+  .products-section { padding: 40px 24px; }
+  .products-grid { grid-template-columns: 1fr; }
+}

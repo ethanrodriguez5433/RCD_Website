@@ -97,6 +97,14 @@
   line-height: 1;
 }
 
+/* While the polaroids aren't real links, override the inherited
+   cursor: pointer so the mouse doesn't lie about clickability.
+   This rule only matches when .polaroid is a <div>; once you swap
+   them back to <a class="polaroid" href="..."> for the bio pages,
+   this selector stops applying and the original cursor: pointer
+   from the .polaroid block above takes over again automatically. */
+div.polaroid { cursor: default; }
+
 /* Instrument label sits below each polaroid, on the dark bg */
 .polaroid-instrument {
   font-family: var(--font-body);

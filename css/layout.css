@@ -55,6 +55,10 @@ nav {
 }
 .nav-links a:hover { color: var(--white); }
 .nav-links a:hover::after { transform: scaleX(1); }
+/* .active marks the page the visitor is currently on; we mirror the
+   hover styling so the underline stays visible without needing a hover. */
+.nav-links a.active { color: var(--white); }
+.nav-links a.active::after { transform: scaleX(1); }
 
 .nav-book {
   background: var(--red);

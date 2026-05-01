@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="images/RCDIcon.png" type="image/x-icon">
+  <title>Merch — Rose City Dancers</title>
+
+  <!-- Same Google Fonts bundle as the home page so the merch page
+       inherits the established display/body/hand families and their
+       weights are already cached on a returning visitor's browser. -->
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Permanent+Marker&family=Barlow+Condensed:wght@400;500;600&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Rajdhani:wght@400;500;600&family=Dancing+Script:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets — load order matters:
+       1. base (tokens/reset)
+       2. layout (nav/footer/section chrome)
+       3. per-page components -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/merch-page.css">
+  <link rel="stylesheet" href="css/merch-order.css">
+  <!-- contact.css supplies the toast styles we reuse for the order
+       confirmation popup at the bottom of this file. -->
+  <link rel="stylesheet" href="css/contact.css">
+</head>
+<body>
+
+<!-- ========== NAV ==========
+     Same structure as index.html so the bar feels continuous as
+     visitors move between pages. The "Merch" link gets .active to
+     show the persistent red underline. -->
+<nav>
+  <a href="index.html#hero" class="nav-logo">Rose City Dancers<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html#music">Music</a></li>
+    <li><a href="index.html#band">Band</a></li>
+    <li><a href="merch.html" class="active">Merch</a></li>
+    <li><a href="index.html#contact" class="nav-book">Book Us</a></li>
+  </ul>
+</nav>
+
+<!-- ========== PAGE HEADER ========== -->
+<div class="page-header">
+  <div class="page-header-label">The Store</div>
+  <h1 class="reveal">Our Merch</h1>
+  <div class="breadcrumb reveal reveal-delay-1">
+    <a href="index.html">Home</a>
+    <span>›</span>
+    <span>Merch</span>
+  </div>
+</div>
+
+<!-- ========== PRODUCT CARDS ==========
+     Browse-only catalog: photo, price, includes-list. The actual
+     selection happens in the order section below. -->
+<div class="products-section">
+  <div class="products-grid">
+
+    <!-- Classic Tee -->
+    <div class="product-card reveal">
+      <div class="product-img">
+        <img src="images/logoTee.jpeg" alt="Band Logo T-Shirt">
+      </div>
+      <div class="product-info">
+        <div class="product-name">Logo Tee</div>
+        <div class="product-price">$20</div>
+        <div class="product-desc">
+          Classic Band tee with RCD logo printed on the front
+        </div>
+        <div class="product-includes">
+          <div class="product-includes-item">Sizes S – XL</div>
+          <div class="product-includes-item">Black only</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Accessory Pack -->
+    <div class="product-card reveal reveal-delay-1">
+      <div class="product-badge">Pack</div>
+      <div class="product-img">
+        <img src="images/accessories.jpeg" alt="Accessory pack">
+      </div>
+      <div class="product-info">
+        <div class="product-name">Accessory Pack</div>
+        <div class="product-price">$7</div>
+        <div class="product-desc">
+          The full accessory bundle — a vinyl sticker and a customizable lyric bracelet, made your way.
+        </div>
+        <div class="product-includes">
+          <div class="product-includes-item">1× Band logo sticker</div>
+          <div class="product-includes-item">1× Girl in the Pink Dress cut sticker</div>
+          <div class="product-includes-item">3× RCD beaded bracelet</div>
+          <div class="product-includes-item">Choose size, color &amp; lyric</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Full Pack -->
+    <div class="product-card reveal reveal-delay-2">
+      <div class="product-badge">Best Value</div>
+      <div class="product-img">
+        <span class="product-img-label">Full Pack Photo</span>
+      </div>
+      <div class="product-info">
+        <div class="product-name">Full Pack</div>
+        <div class="product-price">$25</div>
+        <div class="product-desc">
+          Everything — the Classic Tee plus the full Accessory Pack. The ultimate bundle for the real fans.
+        </div>
+        <div class="product-includes">
+          <div class="product-includes-item">1× Classic Tee (your size)</div>
+          <div class="product-includes-item">1× Band logo sticker</div>
+          <div class="product-includes-item">1× Girl in the Pink Dress cut sticker</div>
+          <div class="product-includes-item">3× RCD beaded bracelet</div>
+          <div class="product-includes-item">Choose size, color &amp; lyric</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ========== ORDER FORM ==========
+     The whole interactive section is inside a single <form>. js/merch.js
+     intercepts the submit, builds a readable order summary, drops it
+     into the hidden #order-details textarea, then POSTs everything to
+     Formspree as JSON so the visitor stays on this page. -->
+<div class="order-section">
+  <div class="order-section-label reveal">Place Your Order</div>
+  <div class="order-section-title reveal reveal-delay-1">Order Form</div>
+
+  <!-- Dedicated Formspree endpoint for merch orders, separate from
+       the booking-inquiry endpoint on the home page. Keeping the two
+       split means orders and bookings each get their own monthly
+       quota and their own inbox thread. -->
+  <form id="order-form"
+        class="order-form"
+        action="https://formspree.io/f/mqenapwk"
+        method="POST">
+
+    <!-- _subject sets the email subject line in your Formspree inbox
+         so merch orders are visually distinct from booking inquiries. -->
+    <input type="hidden" name="_subject" value="New merch order — Rose City Dancers">
+
+    <!-- order-details is populated by js/merch.js right before submit
+         with a human-readable summary of the cart. Formspree shows it
+         in the email body so you can see the order at a glance. -->
+    <textarea id="order-details" name="order_details" hidden></textarea>
+
+    <div class="order-layout">
+
+      <!-- LEFT: Personal Info -->
+      <div class="form-block reveal reveal-delay-1">
+        <div class="order-block-title">Your Info</div>
+
+        <div class="form-group">
+          <label class="form-label" for="full-name">Full Name</label>
+          <input class="form-input" id="full-name" name="name" type="text" placeholder="Your name" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="email">Email Address</label>
+          <input class="form-input" id="email" name="email" type="email" placeholder="you@email.com" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="phone">Phone Number</label>
+          <input class="form-input" id="phone" name="phone" type="tel" placeholder="(555) 000-0000">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="street">Street Address</label>
+          <input class="form-input" id="street" name="street" type="text" placeholder="123 Main St" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="apt">Apt / Unit</label>
+          <input class="form-input" id="apt" name="apt" type="text" placeholder="Optional">
+        </div>
+
+        <div class="form-row-3">
+          <div class="form-group">
+            <label class="form-label" for="city">City</label>
+            <input class="form-input" id="city" name="city" type="text" placeholder="City" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="state">State</label>
+            <input class="form-input" id="state" name="state" type="text" placeholder="ST" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="zip">ZIP</label>
+            <input class="form-input" id="zip" name="zip" type="text" placeholder="00000" required>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Item Selector -->
+      <div class="items-col reveal reveal-delay-2">
+        <div class="order-block-title">Select Items</div>
+        <div class="order-items">
+
+          <!-- Each .order-item carries data-item-id; js/merch.js uses it
+               as the key for selection state and the PRICES/NAMES maps. -->
+
+          <!-- Logo Tee -->
+          <div class="order-item" id="item-tee" data-item-id="tee">
+            <div class="order-item-header">
+              <div class="order-item-check">
+                <svg class="check-icon" width="12" height="12" viewBox="0 0 12 12" fill="none">
+                  <polyline points="2,6 5,9 10,3" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="order-item-thumb">
+                <img src="images/logoTee.jpeg" alt="">
+              </div>
+              <div class="order-item-meta">
+                <div class="order-item-name">Logo Tee</div>
+                <div class="order-item-sub">RCD logo printed front · S–XL</div>
+              </div>
+              <div class="order-item-price">$20</div>
+            </div>
+            <!-- Tee config: brief description, includes list, then shirt size. -->
+            <div class="item-config">
+              <p class="item-config-desc">Classic Band tee with RCD logo printed on the front.</p>
+              <div class="item-includes">
+                <div class="item-includes-item">Sizes S – XL</div>
+                <div class="item-includes-item">Black only</div>
+              </div>
+              <div class="config-section">
+                <div class="config-label">Shirt Size</div>
+                <div class="size-chips shirt-size">
+                  <div class="size-chip"><div class="size-chip-box">S</div></div>
+                  <div class="size-chip"><div class="size-chip-box">M</div></div>
+                  <div class="size-chip active"><div class="size-chip-box">L</div></div>
+                  <div class="size-chip"><div class="size-chip-box">XL</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Accessory Pack -->
+          <div class="order-item" id="item-acc" data-item-id="acc">
+            <div class="order-item-header">
+              <div class="order-item-check">
+                <svg class="check-icon" width="12" height="12" viewBox="0 0 12 12" fill="none">
+                  <polyline points="2,6 5,9 10,3" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="order-item-thumb">
+                <img src="images/accessories.jpeg" alt="">
+              </div>
+              <div class="order-item-meta">
+                <div class="order-item-name">Accessory Pack</div>
+                <div class="order-item-sub">Stickers + Beaded Bracelet</div>
+              </div>
+              <div class="order-item-price">$7</div>
+            </div>
+            <div class="item-config">
+              <p class="item-config-desc">The full accessory bundle — vinyl stickers and a customizable lyric bracelet, made your way.</p>
+              <div class="item-includes">
+                <div class="item-includes-item">1× Band logo sticker</div>
+                <div class="item-includes-item">1× Girl in the Pink Dress cut sticker</div>
+                <div class="item-includes-item">3× RCD beaded bracelet</div>
+                <div class="item-includes-item">Choose size, color &amp; lyric</div>
+              </div>
+              <div class="config-section">
+                <div class="config-label">Bracelet Size</div>
+                <div class="config-sublabel">Measured by inner diameter</div>
+                <div class="size-chips bracelet-size">
+                  <div class="size-chip"><div class="size-chip-box">XS</div><div class="size-chip-dim">1.75"</div></div>
+                  <div class="size-chip active"><div class="size-chip-box">S</div><div class="size-chip-dim">2.0"</div></div>
+                  <div class="size-chip"><div class="size-chip-box">M</div><div class="size-chip-dim">2.25"</div></div>
+                  <div class="size-chip"><div class="size-chip-box">L</div><div class="size-chip-dim">2.5"</div></div>
+                </div>
+              </div>
+              <div class="config-section">
+                <div class="config-label">Bracelet Color</div>
+                <div class="config-sublabel">Select one or more</div>
+                <div class="color-chips">
+                  <div class="color-chip active">
+                    <div class="color-chip-swatch c-red"><span class="color-chip-check">✓</span></div>
+                    <span class="color-chip-label">Red</span>
+                  </div>
+                  <div class="color-chip">
+                    <div class="color-chip-swatch c-white"><span class="color-chip-check">✓</span></div>
+                    <span class="color-chip-label">White</span>
+                  </div>
+                  <div class="color-chip">
+                    <div class="color-chip-swatch c-black"><span class="color-chip-check">✓</span></div>
+                    <span class="color-chip-label">Black</span>
+                  </div>
+                  <div class="color-chip">
+                    <div class="color-chip-swatch c-pink"><span class="color-chip-check">✓</span></div>
+                    <span class="color-chip-label">Pink</span>
+                  </div>
+                </div>
+              </div>
+              <div class="config-section">
+                <div class="config-label">Lyric on Bracelet</div>
+                <div class="config-sublabel">Choose a line to stamp into the silicone</div>
+                <div class="lyric-select-wrap">
+                  <select class="lyric-select">
+                    <option value="">— Choose a lyric —</option>
+                    <option>Kill the DJ</option>
+                    <option>The Otherside</option>
+                    <option>I Play for You</option>
+                    <option>RCD</option>
+                    <option>Rose City Dancers</option>
+                    <option>Say I'll be fine</option>
+                    <option>Other...</option>
+                  </select>
+                  <span class="lyric-select-arrow">▾</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Full Pack -->
+          <div class="order-item" id="item-full" data-item-id="full">
+            <div class="order-item-header">
+              <div class="order-item-check">
+                <svg class="check-icon" width="12" height="12" viewBox="0 0 12 12" fill="none">
+                  <polyline points="2,6 5,9 10,3" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="order-item-thumb"></div>
+              <div class="order-item-meta">
+                <div class="order-item-name">Full Pack</div>
+                <div class="order-item-sub">Tee + Stickers + Bracelet · Best Value</div>
+              </div>
+              <div class="order-item-price">$25</div>
+            </div>
+            <div class="item-config">
+              <p class="item-config-desc">Everything — the Logo Tee plus the full Accessory Pack. The ultimate bundle for the real fans.</p>
+              <div class="item-includes">
+                <div class="item-includes-item">1× Logo Tee (your size)</div>
+                <div class="item-includes-item">1× Band logo sticker</div>
+                <div class="item-includes-item">1× Girl in the Pink Dress cut sticker</div>
+                <div class="item-includes-item">3× RCD beaded bracelet</div>
+                <div class="item-includes-item">Choose size, color &amp; lyric</div>
+              </div>
+              <div class="config-section">
+                <div class="config-label">Shirt Size</div>
+                <div class="size-chips shirt-size">
+                  <div class="size-chip"><div class="size-chip-box">S</div></div>
+                  <div class="size-chip active"><div class="size-chip-box">M</div></div>
+                  <div class="size-chip"><div class="size-chip-box">L</div></div>
+                  <div class="size-chip"><div class="size-chip-box">XL</div></div>
+                </div>
+              </div>
+              <div class="config-section">
+                <div class="config-label">Bracelet Size</div>
+                <div class="config-sublabel">Measured by inner diameter</div>
+                <div class="size-chips bracelet-size">
+                  <div class="size-chip"><div class="size-chip-box">XS</div><div class="size-chip-dim">1.75"</div></div>
+                  <div class="size-chip"><div class="size-chip-box">S</div><div class="size-chip-dim">2.0"</div></div>
+                  <div class="size-chip active"><div class="size-chip-box">M</div><div class="size-chip-dim">2.25"</div></div>
+                  <div class="size-chip"><div class="size-chip-box">L</div><div class="size-chip-dim">2.5"</div></div>
+                </div>
+              </div>
+              <div class="config-section">
+                <div class="config-label">Bracelet Color</div>
+                <div class="config-sublabel">Select one or more</div>
+                <div class="color-chips">
+                  <div class="color-chip">
+                    <div class="color-chip-swatch c-red"><span class="color-chip-check">✓</span></div>
+                    <span class="color-chip-label">Red</span>
+                  </div>
+                  <div class="color-chip active">
+                    <div class="color-chip-swatch c-white"><span class="color-chip-check">✓</span></div>
+                    <span class="color-chip-label">White</span>
+                  </div>
+                  <div class="color-chip">
+                    <div class="color-chip-swatch c-black"><span class="color-chip-check">✓</span></div>
+                    <span class="color-chip-label">Black</span>
+                  </div>
+                  <div class="color-chip">
+                    <div class="color-chip-swatch c-pink"><span class="color-chip-check">✓</span></div>
+                    <span class="color-chip-label">Pink</span>
+                  </div>
+                </div>
+              </div>
+              <div class="config-section">
+                <div class="config-label">Lyric on Bracelet</div>
+                <div class="config-sublabel">Choose a line to stamp into the silicone</div>
+                <div class="lyric-select-wrap">
+                  <select class="lyric-select">
+                    <option value="">— Choose a lyric —</option>
+                    <option>Lyric line one goes here</option>
+                    <option>Another memorable lyric</option>
+                    <option>Your favorite line from the album</option>
+                    <option>A chorus lyric example</option>
+                    <option>Bridge lyric option here</option>
+                  </select>
+                  <span class="lyric-select-arrow">▾</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ── ORDER SUMMARY ── -->
+        <div class="order-summary-wrap">
+          <div class="summary-label">Order Summary</div>
+          <div class="summary-rows" id="summary-rows">
+            <div class="summary-row dim">No items selected yet</div>
+          </div>
+          <div class="summary-row total">
+            <span>Total</span>
+            <span class="sum-price" id="summary-total">$0</span>
+          </div>
+        </div>
+
+        <div class="submit-row">
+          <p class="submit-note">We'll follow up via email to confirm your order and collect payment details.</p>
+          <button class="submit-btn" type="submit">Submit →</button>
+        </div>
+
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- ========== FOOTER ========== -->
+<footer>
+  <span class="footer-name">Rose City Dancers</span>
+  <span class="footer-copy">&copy; 2026 Rose City Dancers. All rights reserved.</span>
+</footer>
+
+<!-- Confirmation toast — same component as the contact form on the
+     home page. Reuses the styling from contact.css; merch.js handles
+     showing/hiding it on order submit. -->
+<div id="order-toast" class="contact-toast" role="status" aria-live="polite"></div>
+
+<!-- main.js drives the .reveal scroll-in animations.
+     merch.js handles the order-form interactivity and submission. -->
+<script src="js/main.js"></script>
+<script src="js/merch.js"></script>
+
+</body>
+</html>

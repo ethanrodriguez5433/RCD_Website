@@ -104,3 +104,37 @@ textarea.form-input {
   .contact-layout { grid-template-columns: 1fr; gap: 48px; }
   .form-row { grid-template-columns: 1fr; gap: 0; }
 }
+
+/* ── CONFIRMATION TOAST ──
+   Fixed-position popup that slides up from the bottom when the form
+   is submitted. Hidden by default; js/contact.js adds .visible.
+   z-index sits above the noise overlay (which is at 1000 in base.css). */
+.contact-toast {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--black-3);
+  color: var(--white);
+  padding: 16px 28px;
+  border: 1px solid var(--red);
+  font-family: var(--font-body);
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 1100;
+  max-width: calc(100% - 32px);
+  text-align: center;
+}
+.contact-toast.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+/* Error variant — js sets data-type="error" when Formspree rejects the submission. */
+.contact-toast[data-type="error"] {
+  border-color: var(--white-dim);
+  color: var(--white-dim);
+}
